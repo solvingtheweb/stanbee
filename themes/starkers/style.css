@@ -52,7 +52,7 @@ body 				{ background:#fff; /* Don't forget to style your body to avoid user ove
 
 body,
 input,
-textarea 			{ /* We strongly recommend you declare font-weight using numerical values, but check to see which weights you're exporting first */ }
+textarea 			{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 h1, 
 h2, 
