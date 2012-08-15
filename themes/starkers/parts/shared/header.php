@@ -1,6 +1,6 @@
-
+<div id="container">
 <header>
-	<h1><a href="/"><?php bloginfo( 'name' ); ?></a></h1>
-	<?php bloginfo( 'description' ); ?>
-	<?php get_search_form(); ?>
+	<?php wp_page_menu(); ?>
+	<img src="<?php bloginfo( 'template_url' ); ?>/images/stanbee_logo.png" id="header_logo">
+	
 </header>

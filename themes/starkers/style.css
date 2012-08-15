@@ -78,3 +78,57 @@ h6 					{ font-weight:bold; /* This helps to identify headings at the initial bu
 					{ /* Place your styles here for all 'Retina' screens */ }
 
 }
+
+
+
+/* ---------------------------------------------------------------------------------------------------------- 
+04 Main Layout Styles ---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------- */
+
+header {
+	min-height:100px;
+}
+
+#container {
+	width:1040px;
+	min-height:844px;
+	padding:0px 5px;
+	margin:0px auto;
+	background-image:url(images/bg_temp.jpg);
+}
+
+#content {
+	float:left;
+	background-color:white;
+	width:740px;
+	min-height:300px;
+}
+
+#sidebar {
+	float:right;
+	width:300px;
+	background-color:gray;
+}
+
+footer {
+	clear:both;
+}
+
+/* ---------------------------------------------------------------------------------------------------------- 
+04 Main Menu Styles -----------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------- */
+.menu {
+	float:left;
+	width:400px;
+}
+div.menu ul li {
+	display:inline;
+	padding:10px;
+}
+div.menu ul li a {
+	color:white;
+	text-decoration:none;
+}
+#header_logo {
+	float:right;
+}

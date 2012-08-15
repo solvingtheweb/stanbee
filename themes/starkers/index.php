@@ -8,7 +8,7 @@
  */
 ?>
 <?php get_template_parts( array( 'parts/shared/html-header', 'parts/shared/header' ) ); ?>
-
+<div id="content">
 <?php if ( have_posts() ): ?>
 <h2>Latest Posts</h2>	
 <ol>
@@ -25,5 +25,8 @@
 <?php else: ?>
 <h2>No posts to display</h2>
 <?php endif; ?>
+</div><!-- END CONTENT -->
+
+<?php get_sidebar(); ?>
 
 <?php get_template_parts( array( 'parts/shared/footer','parts/shared/html-footer') ); ?>
