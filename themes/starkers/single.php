@@ -10,7 +10,7 @@
  */
 ?>
 <?php get_template_parts( array( 'parts/shared/html-header', 'parts/shared/header' ) ); ?>
-
+<div id="content">
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
 <article>
@@ -29,5 +29,8 @@
 
 </article>
 <?php endwhile; ?>
+</div> <!-- End Content -->
+
+<?php get_sidebar(); ?>
 
 <?php get_template_parts( array( 'parts/shared/footer','parts/shared/html-footer' ) ); ?>

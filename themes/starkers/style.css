@@ -102,12 +102,13 @@ header {
 	background-color:white;
 	width:740px;
 	min-height:300px;
+	opacity:0.4;
+	border-radius:8px;
 }
 
 #sidebar {
 	float:right;
 	width:300px;
-	background-color:gray;
 }
 
 footer {
