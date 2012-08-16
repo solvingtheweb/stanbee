@@ -118,14 +118,52 @@ footer {
 /* ---------------------------------------------------------------------------------------------------------- 
 04 Main Menu Styles -----------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
-.menu {
+.menu, .menu ul li {
 	float:left;
-	width:400px;
 }
-div.menu ul li {
-	display:inline;
-	padding:10px;
+.menu ul li {
+	position:relative;
+	margin: 0 15px;
+	list-style:none;
 }
+
+.children {
+	position:absolute;
+	float:none;
+	width:100px;
+	padding:0;
+	left:0;
+}
+
+.children li { 
+	display:none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.children li ul.children li { 
+	display:none;
+	margin: 0;
+	padding: 0;
+}
+
+.menu ul li:hover li {
+	float:none;
+	display:block;
+	clear:both;
+}
+
+ul.children li:hover ul.children li {
+	float:none;
+	display:block;
+	clear:both;
+}
+
+ul.children li:hover ul.children {
+	margin-top:-18px;
+	margin-left:65px;
+}
+
 div.menu ul li a {
 	color:white;
 	text-decoration:none;
