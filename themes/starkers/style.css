@@ -102,8 +102,27 @@ header {
 	background-color:white;
 	width:740px;
 	min-height:300px;
-	opacity:0.4;
 	border-radius:8px;
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(255, 255, 255);
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.4);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255)";
+}
+#content_home {
+	float:left;
+	width:740px;
+	min-height:300px;
+}
+#content.product_content {
+	width:600px;
+}
+#left_menu {
+	width:100px;
+	float:left;
 }
 
 #sidebar {
@@ -127,7 +146,7 @@ footer {
 	list-style:none;
 }
 
-.children {
+.menu .children {
 	position:absolute;
 	float:none;
 	width:100px;
@@ -135,13 +154,13 @@ footer {
 	left:0;
 }
 
-.children li { 
+.menu .children li { 
 	display:none;
 	margin: 0;
 	padding: 0;
 }
 
-ul.children li ul.children li { 
+.menu ul.children li ul.children li { 
 	display:none;
 	margin: 0;
 	padding: 0;
@@ -153,13 +172,13 @@ ul.children li ul.children li {
 	clear:both;
 }
 
-ul.children li:hover ul.children li {
+.menu ul.children li:hover ul.children li {
 	float:none;
 	display:block;
 	clear:both;
 }
 
-ul.children li:hover ul.children {
+.menu ul.children li:hover ul.children {
 	margin-top:-18px;
 	margin-left:65px;
 }
@@ -171,3 +190,15 @@ div.menu ul li a {
 #header_logo {
 	float:right;
 }
+
+/* ---------------------------------------------------------------------------------------------------------- 
+05 Home Page Styles -----------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------- */
+#splash_image {
+	text-align:center;
+}
+
+
+
+
+
