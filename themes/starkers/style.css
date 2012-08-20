@@ -52,7 +52,7 @@ body 				{ background:#fff; /* Don't forget to style your body to avoid user ove
 
 body,
 input,
-textarea 			{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+textarea 			{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.125em; color: #4e4f4e; }
 
 h1, 
 h2, 
@@ -60,6 +60,12 @@ h3,
 h4, 
 h5, 
 h6 					{ font-weight:bold; /* This helps to identify headings at the initial build stage, but you should write something more precise later on */ }
+
+h1					{font-size: 2.5em; color: white;}
+h2					{font-size: 2.125em; color: #4e4f4e; font-weight:800;}
+
+a:link, a:visited	{color:#6d6f72; text-decoration:none;}
+a:hover				{color:#4e4f4e}
 
 /* ---------------------------------------------------------------------------------------------------------- 
 03 Media queries (using a mobile-first approach) ------------------------------------------------------------
@@ -90,9 +96,9 @@ header {
 }
 
 #container {
-	width:1040px;
-	min-height:844px;
-	padding:0px 5px;
+	width:1000px;
+	min-height:804px;
+	padding:10px 20px 0px 20px;
 	margin:0px auto;
 	background-image:url(images/bg_temp.jpg);
 }
@@ -100,9 +106,10 @@ header {
 #content {
 	float:left;
 	background-color:white;
-	width:740px;
-	min-height:300px;
+	width:660px;
+	min-height:570px;
 	border-radius:8px;
+	padding:20px;
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(255, 255, 255);
 	/* RGBa with 0.6 opacity */
@@ -114,35 +121,48 @@ header {
 }
 #content_home {
 	float:left;
-	width:740px;
-	min-height:300px;
+	width:700px;
+	min-height:600px;
 }
 #content.product_content {
-	width:600px;
+	width:527px;
 }
 #left_menu {
-	width:100px;
+	margin-top:25px;
+	width:150px;
 	float:left;
 }
 
 #sidebar {
 	float:right;
-	width:300px;
+	width:254px;
+	text-align:right;
+	text-transform:uppercase;
 }
 
 footer {
+	width:400px;;
+	margin:0px auto;
+	text-align:center;
+	padding-top:20px;
 	clear:both;
+	font-size: .63em;
 }
 
 /* ---------------------------------------------------------------------------------------------------------- 
 04 Main Menu Styles -----------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
+.menu {
+	font-size: 1em;
+	text-transform:uppercase;
+}
+
 .menu, .menu ul li {
 	float:left;
 }
 .menu ul li {
 	position:relative;
-	margin: 0 15px;
+	margin: 20px 15px;
 	list-style:none;
 }
 
@@ -192,7 +212,68 @@ div.menu ul li a {
 }
 
 /* ---------------------------------------------------------------------------------------------------------- 
-05 Home Page Styles -----------------------------------------------------------------------------------------
+05 Sidebar Styles -------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------- */
+
+ul#recent_posts {
+	margin-top:16px;
+	padding-top:20px;
+	border-top:1px solid #9fa3a6;
+}
+
+ul#recent_posts li {
+	padding-top:25px;\
+	color:#6d6f72;
+}
+ul#recent_posts li:first-child {
+	padding-top:0px;
+}
+
+/* ---------------------------------------------------------------------------------------------------------- 
+06 Left Menu Styles -----------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------- */
+
+#left_menu {
+	font-size: .875em;
+	color:#4e4f4e;
+	text-transform:uppercase;
+}
+
+#left_menu li {
+	padding:5px 0;
+}
+
+#left_menu li ul.children {
+	margin-left:12px;
+	text-transform:capitalize;
+}
+
+#left_menu .current_page_item a {
+	color:#323232;
+}
+
+/* ---------------------------------------------------------------------------------------------------------- 
+07 Footer Styles --------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------- */
+#copyright {
+	float:left;
+	margin-right:10px;
+}
+
+#footer_nav {
+	width:200px;
+
+	float:left;
+}
+
+#footer_nav ul li {
+	display: inline;
+	border-left: 2px solid #6f7172;
+	padding:0 10px 0 10px;
+}
+
+/* ---------------------------------------------------------------------------------------------------------- 
+08 Home Page Styles -----------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
 #splash_image {
 	text-align:center;
