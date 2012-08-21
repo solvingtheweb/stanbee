@@ -127,6 +127,9 @@ header {
 #content.product_content {
 	width:527px;
 }
+#content.content_nobg {
+	background:none;
+}
 #left_menu {
 	margin-top:25px;
 	width:150px;
@@ -279,7 +282,39 @@ ul#recent_posts li:first-child {
 	text-align:center;
 }
 
+/* ---------------------------------------------------------------------------------------------------------- 
+09 Product Page Styles --------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------- */
 
+h2.product_category {
+	clear:both;
+	font-size: 1.5em;
+	color: #516370;
+}
+h2.product_name {
+	font-size: 1.875em;
+}
+h2.product_name a{
+	color: #516370;
+}
+
+#product {
+	float:left;
+	width:130px;
+	padding:10px;
+	margin-right:15px;
+	text-align:center;
+	background-color:white;
+	border-radius:8px;
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(255, 255, 255);
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.4);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255)";
+}
 
 
 

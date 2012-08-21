@@ -25,7 +25,7 @@
 	<?php the_author_meta( 'description' ); ?>
 	<?php endif; ?>
 
-	<?php comments_template( '', true ); ?>
+
 
 </article>
 <?php endwhile; ?>
