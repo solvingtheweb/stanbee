@@ -114,7 +114,7 @@
 	
 	======================================================================================================================== */	
 	
-	$page_children = get_pages('child_of=17');
+	$page_children = get_pages('child_of=29');
 	foreach($page_children as $child){
 		$current_page_template = get_post_meta($child->ID,'_wp_page_template',true);
 		if($current_page_template != 'page-products-child.php') update_post_meta($child->ID,'_wp_page_template','page-products-child.php');
