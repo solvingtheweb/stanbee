@@ -134,6 +134,7 @@ header {
 }
 #content.content_nobg {
 	background:none;
+	padding-left:0;
 }
 #left_menu {
 	margin-top:25px;
@@ -149,7 +150,7 @@ header {
 }
 
 footer {
-	width:400px;;
+	width:400px;
 	margin:0px auto;
 	text-align:center;
 	padding-top:20px;
@@ -164,45 +165,71 @@ footer {
 	font-size: .9em;
 	text-transform:uppercase;
 }
-
 .menu, .menu ul li {
 	float:left;
-	
 }
-
-
+div.menu ul li a {
+	color:white;
+	text-decoration:none;
+}
 
 .menu ul li {
 	position:relative;
-	margin: 20px 15px;
+	margin: 20px 15px 20px 0;
 	list-style:none;
-	width:100px;
+}
+.menu ul li, .menu ul li ul {
+	padding:0px 10px 0px 10px;
+	width:95px;
 }
 
 .menu .children {
 	position:absolute;
 	float:none;
-	width:100px;
-	padding:0;
 	left:0;
 }
-
 .menu .children li { 
 	display:none;
 	margin: 0;
-	padding: 0;
+	padding:0;
+}
+.menu .children a {
+	color:#313131;
+	font-weight:bold;
+	font-size: .675em;
 }
 
-.menu ul.children li ul.children li { 
-	display:none;
-	margin: 0;
-	padding: 0;
+.menu .children .children {
+	position:relative;
+	background:none;
 }
+.menu .children .children li {
+	margin-left:10px;
+}
+.menu .children .children a {
+	font-weight:normal;
+}
+
+
+
+.menu ul li:hover, .menu ul li:hover ul{
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(255, 255, 255);
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.4);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255)";
+}
+.menu ul li:hover ul li { background:none;}
 
 .menu ul li:hover li {
 	float:none;
 	display:block;
 	clear:both;
+	width:100px;
+	
 }
 
 .menu ul.children li:hover ul.children li {
@@ -211,15 +238,6 @@ footer {
 	clear:both;
 }
 
-.menu ul.children li:hover ul.children {
-	margin-top:-18px;
-	margin-left:100px;
-}
-
-div.menu ul li a {
-	color:white;
-	text-decoration:none;
-}
 
 
 #header_logo {
@@ -290,6 +308,7 @@ ul#recent_posts li:first-child {
 #copyright {
 	float:left;
 	margin-right:10px;
+	margin-bottom:10px;
 }
 
 #footer_nav {
