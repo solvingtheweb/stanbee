@@ -15,3 +15,4 @@
 	<a href="<?php bloginfo('url');?>" rel="Stanbee"><img src="<?php bloginfo( 'template_url' ); ?>/images/stanbee_logo.png" id="header_logo"></a>
 	
 </header>
+<br class="clear" />

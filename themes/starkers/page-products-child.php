@@ -37,10 +37,24 @@
 <div id="content" class="product_content">
 	<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 		<h2><?php the_title(); ?></h2>
-		<?php the_content(); ?>
-
-		<!-- Grab Tech Spec Image -->
-		<img src="<?php the_field('tech_report_image');?>" class="tech_report_image" height='400'>
+		<?php if(get_field('tech_report_image')) {?>
+		<div id="tech_report">
+			<a href="#" id="tech_link"><img src="<?php bloginfo('template_url'); ?>/images/logo_ukas.jpg">
+			<p>View Technical Report</p></a>
+		</div>
+		<?php }?>
+		<div id="info">
+			<?php the_content(); ?>
+		</div>
+		
+		<div id="tech_report_info">
+			<a href="#" id="product_back"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
+			<!-- Grab Tech Spec Image -->
+			<img src="<?php the_field('tech_report_image');?>" class="tech_report_image">
+		</div>
+		
+		
+		
 	<?php endwhile; ?>
 </div><!-- END CONTENT -->
 

@@ -45,7 +45,8 @@
 
 		if( ! is_admin() ) {
 			wp_register_script( 'site', get_stylesheet_directory_uri().'/js/site.js', array( 'jquery' ) );
-			wp_enqueue_script( 'site' );	
+			wp_enqueue_script( 'site' );
+				
 		};
 	}
 	

@@ -90,6 +90,9 @@ a:hover				{color:#4e4f4e}
 /* ---------------------------------------------------------------------------------------------------------- 
 04 Main Layout Styles ---------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
+
+.clear {clear:both;}
+
 body {
 	background-image:url(images/bg.jpg);
 	background-position:50% -600px;
@@ -97,7 +100,7 @@ body {
 }
 
 header {
-	min-height:100px;
+	height:100px;
 }
 
 #container {
@@ -109,6 +112,7 @@ header {
 }
 
 #content {
+	clear:both;
 	float:left;
 	background-color:white;
 	width:660px;
@@ -160,65 +164,61 @@ footer {
 /* ---------------------------------------------------------------------------------------------------------- 
 04 Main Menu Styles & Header --------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
+
+div.menu ul li a {
+	color:white;
+	text-decoration:none;
+}
+
 .menu {
-	font-size: .9em;
+	height:100px;
+	font-size: 1em;
 	text-transform:uppercase;
 }
 
 .menu, .menu ul li {
 	float:left;
-	
 }
-
-
 
 .menu ul li {
-	position:relative;
-	margin: 20px 15px;
-	list-style:none;
-	width:100px;
+	max-width:110px;
+	padding:10px 20px 5px 20px;
+
+}
+.menu ul li:hover {
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(255, 255, 255);
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.4);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255)";
 }
 
-.menu .children {
-	position:absolute;
+ul.children li {
 	float:none;
-	width:100px;
-	padding:0;
-	left:0;
-}
-
-.menu .children li { 
-	display:none;
-	margin: 0;
 	padding: 0;
+	left:-9999px;
+}
+ul.children li:hover {
+	background:none;
+}
+.menu ul li:hover ul.children li {
+	left:auto;
+}
+div.menu ul li ul li a {
+	font-size: .625em;
+	font-weight:bold;
+	color:#313131;
+}
+div.menu ul li ul li ul li a {
+	font-weight:normal;
 }
 
-.menu ul.children li ul.children li { 
-	display:none;
-	margin: 0;
-	padding: 0;
-}
-
-.menu ul li:hover li {
-	float:none;
-	display:block;
-	clear:both;
-}
-
-.menu ul.children li:hover ul.children li {
-	float:none;
-	display:block;
-	clear:both;
-}
-
-.menu ul.children li:hover ul.children {
-	margin-top:-18px;
-	margin-left:100px;
-}
-
-div.menu ul li a {
-	color:white;
-	text-decoration:none;
+ul.children li ul.children li {
+	margin-left:10px;
+	color:#313131;
 }
 
 
@@ -345,28 +345,5 @@ h2.product_name a{
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255)";
 }
 
-#info {
-	position:relative;
-	margin-top:15px;
-}
-#tech_report {
-	position:absolute;
-	top:0;
-	right:0;
-	width: 205px;
-}
-#tech_report img {
-	float:left;
-	margin-right:10px;
-}
-#tech_report p {
-	padding-top:15px;
-	font-size: .6875em;
-}
-#tech_report_info {
-	margin-top:15px;
-}
-.tech_report_image {
-	margin-top:15px;
-	max-width:525px;
-}
+
+

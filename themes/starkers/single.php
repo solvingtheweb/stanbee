@@ -17,7 +17,7 @@
 <article>
 
 	<h2><?php the_title(); ?></h2>
-	<time datetime="<?php the_time( 'Y-m-D' ); ?>" pubdate><?php the_date(); ?> <?php the_time(); ?></time> <?php comments_popup_link('Leave a Comment', '1 Comment', '% Comments'); ?>
+	<time datetime="<?php the_time( 'Y-m-D' ); ?>" pubdate><?php the_date(); ?> <?php the_time(); ?></time> 
 	<?php the_content(); ?>			
 
 	<?php if ( get_the_author_meta( 'description' ) ) : ?>
