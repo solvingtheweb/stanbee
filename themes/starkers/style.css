@@ -167,6 +167,7 @@ footer {
 }
 .menu, .menu ul li {
 	float:left;
+	font-family:'UniversLTW01-47LightCn';
 }
 div.menu ul li a {
 	color:white;
