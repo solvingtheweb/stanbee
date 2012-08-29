@@ -12,7 +12,7 @@
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 		<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon.ico"/>
 		<link rel="stylesheet" href="<?php bloginfo( 'template_url' ); ?>/style.css"/>
-		<script type="text/javascript" src="http://fast.fonts.com/jsapi/87bb779d-8fdb-47df-97c3-6c88e670826f.js"></script>
+		<link type="text/css" rel="stylesheet" href="http://fast.fonts.com/cssapi/87bb779d-8fdb-47df-97c3-6c88e670826f.css"/>
 		<?php wp_head(); ?>
 	</head>
 	<body <?php body_class(); ?>>
