@@ -33,8 +33,7 @@ nav,
 li					{ position:relative; /* For absolutely positioning elements within containers (add more to the list if need be) */ }
 .group:after 		{ display:block; height:0; clear:both; content:"."; visibility:hidden; /* For clearing */ }
 body 				{ background:#fff; /* Don't forget to style your body to avoid user overrides */ }
-::-moz-selection 	{ background:#ff0; color:#333; }
-::selection 		{ background:#ff0; color:#333; }
+
 
 /* ---------------------------------------------------------------------------------------------------------- 
 02 Typography -----------------------------------------------------------------------------------------------
@@ -97,13 +96,13 @@ body {
 }
 
 header {
-	min-height:100px;
+	min-height:90px;
 }
 
 #container {
 	width:1000px;
 	min-height:804px;
-	padding:10px 20px 0px 20px;
+	padding:0px 20px 0px 20px;
 	margin:0px auto;
 	
 }
@@ -162,6 +161,7 @@ footer {
 04 Main Menu Styles & Header --------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
 .menu {
+	z-index:1;
 	font-size: .9em;
 	text-transform:uppercase;
 }
@@ -175,12 +175,15 @@ div.menu ul li a {
 
 .menu ul li {
 	position:relative;
-	margin: 20px 15px 20px 0;
+	margin: 0px 15px 20px 0;
 	list-style:none;
 }
 .menu ul li, .menu ul li ul {
 	padding:0px 10px 0px 10px;
 	width:95px;
+}
+.menu ul li {
+	padding-top:20px;
 }
 
 .menu .children {
@@ -210,17 +213,33 @@ div.menu ul li a {
 	font-weight:normal;
 }
 
+.menu ul li:hover {
+	background-color:white;
+	
+}
 
-
-.menu ul li:hover, .menu ul li:hover ul{
+.menu ul li:hover{
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(255, 255, 255);
 	/* RGBa with 0.6 opacity */
-	background: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.8);
 	/* For IE 5.5 - 7*/
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#204255255255, endColorstr=#204255255255);
 	/* For IE 8*/
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#104255255255, endColorstr=#104255255255)";
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#204255255255, endColorstr=#204255255255)";
+}
+.menu ul li:hover ul{
+	/* webkit example */
+	background-image: -webkit-gradient(
+	  linear, left top, left bottom, from(rgba(255,255,255,0.8)),
+	  to(rgba(255,255,255,0.0)), color-stop(.5,#FFFFFF)
+	);
+}
+.menu ul li:hover ul{
+	/* mozilla example - FF3.6+ */
+	background-image: -moz-linear-gradient(
+	  rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 95%
+	);
 }
 .menu ul li:hover ul li { background:none;}
 
@@ -238,13 +257,12 @@ div.menu ul li a {
 	clear:both;
 }
 
-
-
 #header_logo {
 	float:right;
+	margin-top:20px;
 }
 #header_middle {
-	margin-top:12px;
+	margin-top:22px;
 	margin-left:100px;
 	float:left;
 	width:240px;
