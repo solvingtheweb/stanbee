@@ -10,7 +10,9 @@
  */
 ?>
 <?php get_template_parts( array( 'parts/shared/html-header', 'parts/shared/header' ) ); ?>
-<h1>Our Company</h1>
+<div id="page_headline">
+	<h1>Our Company</h1>
+</div>
 <div id="left_menu">
 	<?php wp_list_pages('title_li=&child_of=7');
 	?>

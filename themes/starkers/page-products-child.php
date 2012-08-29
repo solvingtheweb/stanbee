@@ -10,7 +10,9 @@
  */
 ?>
 <?php get_template_parts( array( 'parts/shared/html-header', 'parts/shared/header' ) ); ?>
+<div id="page_headline">
 <h1>Our Most Advanced Technology</h1>
+</div>
 <div id="left_menu">
 	<?php 
 	// use wp_list_pages to display parent and all child pages - including all generations
