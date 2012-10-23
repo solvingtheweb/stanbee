@@ -122,7 +122,6 @@ header {
 	width:660px;
 	min-height:620px;
 	overflow: scroll;
-	max-height: 500px;
 	border-radius:8px;
 	padding:20px;
 	/* Fallback for web browsers that doesn't support RGBa */
