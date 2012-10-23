@@ -4,10 +4,6 @@
 	<?php //list pages exluding home 
 	wp_page_menu('exclude=5'); ?>
 	<div id="header_middle">
-		<div id="social_buttons">
-			<a href="<?php bloginfo('url');?>" rel="Stanbee"><img src="<?php bloginfo( 'template_url' ); ?>/images/icon_facebook.png"></a>
-			<a href="<?php bloginfo('url');?>" rel="Stanbee"><img src="<?php bloginfo( 'template_url' ); ?>/images/icon_twitter.png"></a>
-		</div>
 		<div id="recycle">
 			<img src="<?php bloginfo( 'template_url' ); ?>/images/icon_recycle.png">
 		</div>
