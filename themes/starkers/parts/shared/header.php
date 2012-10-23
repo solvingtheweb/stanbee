@@ -2,7 +2,7 @@
 <header>
 	
 	<?php //list pages exluding home 
-	wp_page_menu('exclude=5'); ?>
+		wp_page_menu('exclude=5&sort_column=menu_order'); ?>
 	<div id="header_middle">
 		<div id="recycle">
 			<img src="<?php bloginfo( 'template_url' ); ?>/images/icon_recycle.png">
