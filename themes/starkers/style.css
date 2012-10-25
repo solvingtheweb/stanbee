@@ -121,7 +121,6 @@ header {
 	font-family:'Univers LT W01 65 Bold';
 	width:660px;
 	min-height:620px;
-	overflow: scroll;
 	border-radius:8px;
 	padding:20px;
 	/* Fallback for web browsers that doesn't support RGBa */
