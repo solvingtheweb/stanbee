@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Products
+ * Template Name: Home
  *
  * @package 	WordPress
  * @subpackage 	Starkers

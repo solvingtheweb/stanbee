@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Company
+ * Template Name: Contacts
  *
  * @package 	WordPress
  * @subpackage 	Starkers
