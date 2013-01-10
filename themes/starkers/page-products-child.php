@@ -41,8 +41,9 @@
 		<h2><?php the_title(); ?></h2>
 		<?php if(get_field('tech_report_image')) {?>
 		<div id="tech_report">
-			<a href="#" id="tech_link"><img src="<?php bloginfo('template_url'); ?>/images/logo_ukas.jpg">
-			<p>View Technical Report</p></a>
+			<!--<a href="#" id="tech_link"><img src="<?php bloginfo('template_url'); ?>/images/logo_ukas.jpg"> -->
+			<a href="#" id="tech_link"><p>View Technical Report</p></a>
+			<a href="#" id="satra_link"><p>View SATRA Report</p></a>
 		</div>
 		<?php }?>
 		<div id="info">
@@ -50,8 +51,14 @@
 		</div>
 		
 		<div id="tech_report_info">
-			<a href="#" id="product_back"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
+			<a href="#" id="product_back_tech"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
 			<!-- Grab Tech Spec Image -->
+			<img src="<?php the_field('tech_report_image');?>" class="tech_report_image">
+		</div>
+		<div id="satra_report_info">
+			<a href="#" id="product_back_satra"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
+			<!-- Grab Tech Spec Image -->
+			<p>This would contain the satra stuff.</p>
 			<img src="<?php the_field('tech_report_image');?>" class="tech_report_image">
 		</div>
 		
