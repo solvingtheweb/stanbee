@@ -39,10 +39,13 @@
 <div id="content" class="product_content">
 	<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 		<h2><?php the_title(); ?></h2>
-		<?php if(get_field('tech_report_image')) {?>
+		<?php if(get_field('satra_test_results') || get_field('product_data_sheet')) {?>
 		<div id="tech_report">
-			<a href="#" id="tech_link"><img src="<?php bloginfo('template_url'); ?>/images/logo_ukas.jpg">
-			<p>View Technical Report</p></a>
+			<?php
+			if(get_field('satra_test_results')) {echo '<a href="' . get_field('satra_test_results') . '"><p>View Satra Test Results</p></a>';}
+			if(get_field('product_data_sheet')) {echo '<a href="' . get_field('product_data_sheet') . '"><p>View Product Data Sheet</p></a>';}
+			?>
+
 		</div>
 		<?php }?>
 		<div id="info">
@@ -50,8 +53,14 @@
 		</div>
 		
 		<div id="tech_report_info">
-			<a href="#" id="product_back"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
+			<a href="#" id="product_back_tech"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
 			<!-- Grab Tech Spec Image -->
+			<img src="<?php the_field('tech_report_image');?>" class="tech_report_image">
+		</div>
+		<div id="satra_report_info">
+			<a href="#" id="product_back_satra"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
+			<!-- Grab Tech Spec Image -->
+			<p>This would contain the satra stuff.</p>
 			<img src="<?php the_field('tech_report_image');?>" class="tech_report_image">
 		</div>
 		
