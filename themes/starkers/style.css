@@ -449,3 +449,7 @@ h2.product_name a{
 	display: block;
 	margin:20px 0;
 }
+
+#satra_test_results li, #product_data_sheets li {
+	padding-bottom:10px;
+}
