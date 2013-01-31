@@ -421,6 +421,7 @@ h2.product_name a{
 #info {
 	position:relative;
 	margin-top:15px;
+	overflow:hidden;
 }
 #tech_report {
 	position:absolute;
@@ -433,7 +434,6 @@ h2.product_name a{
 	margin-right:10px;
 }
 #tech_report p {
-	padding-top:10px;
 	text-align:right;
 	font-size: .6875em;
 }
