@@ -444,3 +444,8 @@ h2.product_name a{
 	margin-top:15px;
 	max-width:525px;
 }
+
+#product_back_satra, #product_back_tech {
+	display: block;
+	margin:20px 0;
+}

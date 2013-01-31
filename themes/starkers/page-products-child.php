@@ -42,8 +42,8 @@
 		<?php if(get_field('satra_test_results') || get_field('product_data_sheet')) {?>
 		<div id="tech_report">
 			<?php
-			if(get_field('satra_test_results')) {echo '<a href="' . get_field('satra_test_results') . '"><p>View Satra Test Results</p></a>';}
-			if(get_field('product_data_sheet')) {echo '<a href="' . get_field('product_data_sheet') . '"><p>View Product Data Sheet</p></a>';}
+			if(get_field('satra_test_results')) {echo '<a href="#" id="satra_test_results_link"><p>View Satra Test Results</p></a>';}
+			if(get_field('product_data_sheet')) {echo '<a href="#" id="product_data_sheets_link"><p>View Product Data Sheet</p></a>';}
 			?>
 
 		</div>
@@ -52,16 +52,30 @@
 			<?php the_content(); ?>
 		</div>
 		
-		<div id="tech_report_info">
-			<a href="#" id="product_back_tech"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
-			<!-- Grab Tech Spec Image -->
-			<img src="<?php the_field('tech_report_image');?>" class="tech_report_image">
-		</div>
-		<div id="satra_report_info">
+		<div id="satra_test_results">
 			<a href="#" id="product_back_satra"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
-			<!-- Grab Tech Spec Image -->
-			<p>This would contain the satra stuff.</p>
-			<img src="<?php the_field('tech_report_image');?>" class="tech_report_image">
+			
+			<?php if(get_field('satra_test_results')): ?>
+				<ul>
+				<?php while(has_sub_field('satra_test_results')): ?>
+					<li><a href="<?php the_sub_field('satra_report_file'); ?>"><?php the_sub_field('satra_report_name')?></a></li>
+				<?php endwhile; ?>
+				</ul>
+			<?php endif; ?>
+	
+		</div>
+		
+		<div id="product_data_sheets">
+			<a href="#" id="product_back_tech"><img src="<?php bloginfo('template_url'); ?>/images/arrow_small_left.png"> Back</a>
+			
+			<?php if(get_field('product_data_sheet')): ?>
+				<ul>
+				<?php while(has_sub_field('product_data_sheet')): ?>
+					<li><a href="<?php the_sub_field('data_sheet_file'); ?>"><?php the_sub_field('data_sheet_name')?></a></li>
+				<?php endwhile; ?>
+				</ul>
+			<?php endif; ?>
+			
 		</div>
 		
 		
