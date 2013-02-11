@@ -4,13 +4,15 @@
 <?php dynamic_sidebar (1); ?>
 
 <?php endif; ?>
-<!-- Headline -->
+<!-- Headline --><!--
 	<div id="headline">
 		<p>When we say we're environmentally responsible, we really mean it!</p><br />
 		<p>Here's How.</p>
 		<img src="<?php bloginfo( 'template_url' ); ?>/images/arrow_large_right.png">
 	</div>
+	<hr>-->
 <!-- End Headline -->
+
 
 <!-- RECENT POSTS -->
 	<ul id="recent_posts">
