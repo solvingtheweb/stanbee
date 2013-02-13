@@ -158,7 +158,7 @@ header {
 }
 
 footer {
-	width:400px;
+	width:300px;
 	margin:0px auto;
 	text-align:center;
 	padding-top:20px;
@@ -360,8 +360,6 @@ ul#recent_posts li:first-child {
 }
 
 #footer_nav {
-	width:200px;
-
 	float:left;
 }
 
@@ -376,6 +374,8 @@ ul#recent_posts li:first-child {
 ---------------------------------------------------------------------------------------------------------- */
 #splash_image {
 	text-align:center;
+	position: absolute;
+	right: 0;
 }
 
 /* ---------------------------------------------------------------------------------------------------------- 
