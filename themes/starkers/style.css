@@ -376,6 +376,7 @@ ul#recent_posts li:first-child {
 	text-align:center;
 	position: absolute;
 	right: 0;
+	top:60px;
 }
 
 /* ---------------------------------------------------------------------------------------------------------- 
