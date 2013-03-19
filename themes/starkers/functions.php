@@ -120,4 +120,22 @@
 		$current_page_template = get_post_meta($child->ID,'_wp_page_template',true);
 		if($current_page_template != 'page-products-child.php') update_post_meta($child->ID,'_wp_page_template','page-products-child.php');
 	}
+
+
+	// Add theme support for post thumbnails 
+	add_theme_support('post-thumbnails');
+	add_image_size( 'custom_thumb', 254, 254, true);
+
+	// Add thumbnail to excerpt
+	add_filter( 'the_excerpt', 'excerpt_thumbnail' );
+	function excerpt_thumbnail($excerpt){
+	    if(is_single()) return $excerpt;
+	    global $post;
+	    if ( has_post_thumbnail() ) {
+	        $img .= '<a href="'.get_permalink($post->ID).'">'.get_the_post_thumbnail($post->ID, 'custom_thumb').'</a>';
+	    } else {
+	        $img = '';
+	    }
+	    return $img.$excerpt;
+	}
 ?>
