@@ -16,15 +16,25 @@
 
 <!-- RECENT POSTS -->
 	<ul id="recent_posts">
-		<?php
-			$args = array( "numberposts" => "3", "post_status" => "publish");
-				$recent_posts = wp_get_recent_posts( $args );
-				foreach( $recent_posts as $recent ){
-					
-						echo '<li><a href="' . get_permalink($recent["ID"]) . '" title="Look '.esc_attr($recent["post_title"]).'" >' .   $recent["post_title"].'</a> </li> ';
-					
-				}
-		?>
+		<?php $custom_query = new WP_Query('cat=-9'); // exclude category 9
+		while($custom_query->have_posts()) : $custom_query->the_post(); ?>
+
+			<li <?php post_class(); ?> id="post-<?php the_ID(); ?>">
+				<h1><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
+				<?php if ( has_post_video()) : ?>
+					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" >
+						<?php the_post_video_image(); ?>
+						<img class="play_button" src="<?php bloginfo('template_url'); ?>/images/play_button.png">
+					</a>
+				<?php else : ?>
+					<?php the_excerpt(); ?>
+				<?php endif; ?>
+			</li>
+
+		<?php endwhile; ?>
+		<?php wp_reset_postdata(); // reset the query ?>
+
 	</ul>
 <!--  END RECENT POSTS -->
+
 </div>
