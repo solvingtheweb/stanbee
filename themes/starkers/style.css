@@ -60,7 +60,7 @@ h4,
 h5, 
 h6 					{ clear:both; /* This helps to identify headings at the initial build stage, but you should write something more precise later on */ }
 
-h1					{font-size: 1.25em; font-family:'Helvetica W01 Bold'; color: white; margin-bottom: 10px;}
+h1					{font-size: 1.25em; font-family:'Helvetica W01 Bold', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;; color: white; margin-bottom: 10px;}
 h2					{font-size: 2em; color: #fff; font-weight:800; margin-bottom:10px;}
 h3					{font-size: 1.175em;}
 h4					{font-size: 1.45em;}
@@ -69,6 +69,13 @@ p					{margin-bottom:10px; line-height: 1.5em;}
 
 a:link, a:visited	{color:#fff; text-decoration:none;}
 a:hover				{color:#2fc3d7}
+
+sup {
+	top: -0.75em;
+	font-family: Helvetica,sans-serif;
+	font-size: .5em;
+	font-weight: normal;
+}
 
 /* ---------------------------------------------------------------------------------------------------------- 
 03 Media queries (using a mobile-first approach) ------------------------------------------------------------
@@ -111,7 +118,6 @@ header {
 	width:1000px;
 	min-height:804px;
 	padding:0px 20px 0px 20px;
-	margin:0px auto;
 	
 }
 
@@ -121,15 +127,51 @@ header {
 
 #content {
 	float:left;
-	font-family:'Helvetica W01 Roman';
+	font-family:'Helvetica W01 Roman', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 	width:660px;
 	min-height:620px;
-	border-radius:8px;
 	padding:20px;
-	border:1px solid #1c7581;
-	border-radius:8px;
-	background-color: rgba(19, 140, 157, 0.6);
 }
+
+#product {
+	float:left;
+	width:128px;
+	padding:10px;
+	margin-right:15px;
+	text-align:center;
+}
+
+#content, #product {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(19,140,157,0.6)), color-stop(50%,rgba(19,140,157,0.6)), color-stop(100%,rgba(19,140,157,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(19,140,157,0.6) 0%,rgba(19,140,157,0.6) 50%,rgba(19,140,157,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(19,140,157,0.6) 0%,rgba(19,140,157,0.6) 50%,rgba(19,140,157,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(19,140,157,0.6) 0%,rgba(19,140,157,0.6) 50%,rgba(19,140,157,0) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(19,140,157,0.6) 0%,rgba(19,140,157,0.6) 50%,rgba(19,140,157,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99138c9d', endColorstr='#00138c9d',GradientType=0 ); /* IE6-9 */  
+
+	position: relative;
+	border-top:1px solid #1c7581;
+	border-radius:8px;
+}
+
+#content:before, #content:after, #product:before, #product:after {
+	content: "";
+	position: absolute;
+	background-image: -webkit-gradient(linear, 31 143, 156 100%, from(#1c7581), to(rgba(31,143,156,0)));
+	background-image: -webkit-linear-gradient(#1c7581, rgba(31,143,156,0));
+	background-image: -moz-linear-gradient(#1c7581, rgba(31,143,156,0));
+	background-image: -o-linear-gradient(#1c7581, rgba(31,143,156,0));
+	top: 7px;
+	bottom: -1px;
+	width: 1px;
+}
+#content:before, #product:before {
+	left: 0px;
+}
+#content:after, #product:after {
+	right: 0px;
+}
+
 #content_home {
 	float:left;
 	width:700px;
@@ -140,8 +182,13 @@ header {
 }
 #content.content_nobg {
 	background:none;
+	background-image:none;
 	border:none;
 	padding-left:0;
+}
+
+#content.content_nobg:before, #content.content_nobg:after {
+	background-image:none;
 }
 #left_menu {
 	margin-top:25px;
@@ -161,7 +208,7 @@ footer {
 	text-align:center;
 	padding-top:20px;
 	clear:both;
-	font-size: .63em;
+	font-size: .6875em;
 	margin-bottom:15px;
 }
 
@@ -186,11 +233,11 @@ div.menu ul li a {
 	margin: 0px 15px 20px 0;
 	list-style:none;
 	text-transform:uppercase;
-	font-family:'Helvetica W01 Cn';
+	font-family:'Helvetica W01 Cn', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 }
 .menu ul li, .menu ul li ul {
 	padding:0px 10px 5px 10px;
-	width:90px;
+	width:95px;
 }
 .menu ul li {
 	padding-top:20px;
@@ -214,7 +261,7 @@ div.menu ul li a {
 
 .menu .children li a {
 	color:#313131;
-	font-family:'Helvetica W01 Bd Cn';
+	font-family:'Helvetica W01 Bd Cn', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 	font-size: 0.875em;
 }
 
@@ -223,10 +270,11 @@ div.menu ul li a {
 .menu .children .children {
 	position:relative;
 	background:none;
+	padding-bottom:5px;
 }
 
 .menu .children .children a {
-	font-family:'Helvetica W01 Cn';
+	font-family:'Helvetica W01 Cn', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 }
 
 .menu ul li:hover {
@@ -238,7 +286,7 @@ div.menu ul li a {
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(255, 255, 255);
 	/* RGBa with 0.6 opacity */
-	background: rgba(255, 255, 255, 0.8);
+	background: rgba(255, 255, 255, 0.9);
 	/* For IE 5.5 - 7*/
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#204255255255, endColorstr=#204255255255);
 	/* For IE 8*/
@@ -248,11 +296,11 @@ div.menu ul li a {
 .menu ul li:hover a { color:#333;}
 
 .menu ul li:hover ul{
-	padding-bottom: 30px;
+	padding-bottom: 40px;
 	/* webkit example */
 	background-image: -webkit-gradient(
-	  linear, left top, left bottom, from(rgba(255,255,255,0.8)),
-	  to(rgba(255,255,255,0.0)), color-stop(.5,#FFFFFF)
+	  linear, left top, left bottom, from(rgba(255,255,255,0.9)),
+	  to(rgba(255,255,255,0.0)), color-stop(.7,#FFFFFF)
 	);
 }
 .menu ul li:hover ul{
@@ -323,7 +371,7 @@ ul#recent_posts li:first-child {
 }
 
 ul#recent_posts h1 { 
-	font-family:'Helvetica W01 Light Cn'; 
+	font-family:'Helvetica W01 Cn', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-size: 1.6rem;
 	font-weight: normal;
 	line-height: 1.1em;
@@ -372,12 +420,11 @@ ul#recent_posts li p {
 ---------------------------------------------------------------------------------------------------------- */
 
 .footer_info {
-	width:300px;
+	width:316px;
 	margin:0px auto;
 	text-align:center;
 	padding-top:20px;
 	clear:both;
-	font-size: .63em;
 	margin-top: 151px;
 }
 #copyright {
@@ -418,13 +465,13 @@ ul#recent_posts li p {
 
 h2.product_category {
 	clear:both;
-	font-family:'Helvetica W01 Bold';
+	font-family:'Helvetica W01 Blk', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 	font-size: 1.125em;
 	text-transform:uppercase;
 	color: #fff;
 }
 h2.product_name {
-	font-family:'Helvetica W01 Bold';
+	font-family:'Helvetica W01 Bold', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 	font-size: 1.5em;
 }
 h2.product_name a{
@@ -435,8 +482,15 @@ h2.product_name a:hover {
 	color:#2fc3d7;
 }
 
+h2.product_name .sub_headline {
+	font-family: Helvetica;
+	font-size: .65em;
+	font-weight: normal;
+	margin-top: 3px;
+}
+
 .product_content h2 {
-	font-family:'Helvetica W01 Bold';
+	font-family:'Helvetica W01 Bold', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 }
 time {
 	font-size: .875em;
@@ -446,20 +500,10 @@ time {
 	display: block;
 }
 
-#product {
-	float:left;
-	width:128px;
-	padding:10px;
-	margin-right:15px;
-	text-align:center;
-	border:1px solid #1c7581;
-	border-radius:8px;
-	background-color: rgba(19, 140, 157, 0.6);
-}
-
 #product p {
-	font-family:'Helvetica W01 Light Cn';
-	font-size: 1.125em;
+	font-family:'Helvetica W01 Narrow Rg', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
+	font-size: 1.25em;
+	margin-bottom: 0;
 }
 
 #info {
