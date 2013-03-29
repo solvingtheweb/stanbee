@@ -63,9 +63,9 @@ h6 					{ clear:both; /* This helps to identify headings at the initial build st
 h1					{font-size: 1.25em; font-family:'Helvetica W01 Bold', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;; color: white; margin-bottom: 10px;}
 h2					{font-size: 2em; color: #fff; font-weight:800; margin-bottom:10px;}
 h3					{font-size: 1.175em;}
-h4					{font-size: 1.45em;}
+h4					{font-size: 1.45em; margin-bottom: 12px;}
 
-p					{margin-bottom:10px; line-height: 1.5em;}
+p					{font-family: Helvetica, Arial, sans-serif; margin-bottom:10px; line-height: 1.5em;}
 
 a:link, a:visited	{color:#fff; text-decoration:none;}
 a:hover				{color:#2fc3d7}
@@ -504,6 +504,10 @@ time {
 	font-family:'Helvetica W01 Narrow Rg', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;;
 	font-size: 1.25em;
 	margin-bottom: 0;
+	font-size: 1.125em;
+	margin-bottom: 0;
+	line-height: 1em;
+	padding: 6px 2px 8px;
 }
 
 #info {
