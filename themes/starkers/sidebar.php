@@ -27,7 +27,7 @@
 						<img class="play_button" src="<?php bloginfo('template_url'); ?>/images/play_button.png">
 					</a>
 				<?php else : ?>
-					<?php the_excerpt(); ?>
+					<?php the_content($more_link_text); ?>
 				<?php endif; ?>
 			</li>
 
