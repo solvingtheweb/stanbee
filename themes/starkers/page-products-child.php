@@ -61,6 +61,8 @@
 					<li><a href="<?php the_sub_field('satra_report_file'); ?>"><?php the_sub_field('satra_report_name')?></a></li>
 				<?php endwhile; ?>
 				</ul>
+			<?php else : ?>
+				<p>No results available at this time.</p>
 			<?php endif; ?>
 	
 		</div>
@@ -74,6 +76,8 @@
 					<li><a href="<?php the_sub_field('data_sheet_file'); ?>"><?php the_sub_field('data_sheet_name')?></a></li>
 				<?php endwhile; ?>
 				</ul>
+			<?php else : ?>
+				<p>No data sheets available at this time.</p>
 			<?php endif; ?>
 			
 		</div>
