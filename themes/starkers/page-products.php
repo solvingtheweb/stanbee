@@ -29,7 +29,7 @@
 		
 		<ul class="page-id-<?php echo $post->ID; ?>">
 			<?php
-				$childpages = get_pages( array( 'child_of' => $page->ID, 'parent' => $page->ID, 'sort_column' => 'post_date', 'sort_order' => 'menu_order' ) );
+				$childpages = get_pages( array( 'child_of' => $page->ID, 'parent' => $page->ID, 'sort_column' => 'post_date', 'sort_column' => 'menu_order' ) );
             	
 				foreach( $childpages as $childpage ) {		
 					$content = $childpage->post_content;
