@@ -24,8 +24,9 @@
 
 		$content = apply_filters( 'the_content', $content );
 	?>
-		
-		<h2 class="product_category"><?php echo $page->post_title; ?></h2>
+		<div id="page_headline">
+			<h2 class="page_title"><?php echo $page->post_title; ?></h2>
+		</div>
 		
 		<ul class="page-id-<?php echo $post->ID; ?>">
 			<?php

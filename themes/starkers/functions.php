@@ -125,7 +125,8 @@
 	// Add theme support for post thumbnails 
 	add_theme_support('post-thumbnails');
 	add_image_size( 'custom_thumb', 254, 254, true);
-
+	
+	/*
 	// Add thumbnail to excerpt
 	add_filter( 'the_excerpt', 'excerpt_thumbnail' );
 	function excerpt_thumbnail($excerpt){
@@ -137,7 +138,7 @@
 	        $img = '';
 	    }
 	    return $img.$excerpt;
-	}
+	}*/
 
 	// Change Excerpt Length
 	function new_excerpt_length($length) {

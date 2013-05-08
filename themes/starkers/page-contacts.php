@@ -11,7 +11,7 @@
 ?>
 <?php get_template_parts( array( 'parts/shared/html-header', 'parts/shared/header' ) ); ?>
 <div id="page_headline">
-	<h1>Contacts</h1>
+	<h2 class="page_title">Contacts</h2>
 </div>
 <div id="content">
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>

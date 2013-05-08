@@ -25,14 +25,10 @@
 
 			<li <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 				<h1><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
-				<?php if ( has_post_thumbnail()) : ?>
-					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" >
-						<?php the_post_thumbnail(); ?>
-						<img class="play_button" src="<?php bloginfo('template_url'); ?>/images/play_button.png">
-					</a>
-				<?php else : ?>
-					<?php the_excerpt(); ?>
-				<?php endif; ?>
+				<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" >
+					<?php the_post_thumbnail(); ?>
+				</a>
+				<?php the_excerpt(); ?>
 			</li>
 		<?php $count++; } ?>
 		<?php endwhile; ?>

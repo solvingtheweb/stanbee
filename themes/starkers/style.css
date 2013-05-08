@@ -62,6 +62,15 @@ h6 					{ clear:both; /* This helps to identify headings at the initial build st
 
 h1					{font-size: 1.25em; font-family:'Helvetica W01 Bold', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;; color: white; margin-bottom: 10px;}
 h2					{font-size: 2em; color: #fff; font-weight:800; margin-bottom:10px;}
+
+h2.page_title {
+	clear:both;
+	font-family:'Helvetica W01 Blk', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 1.125em;
+	text-transform:uppercase;
+	color: #fff;
+}
+
 h3					{font-size: 1.175em;}
 h4					{font-size: 1.45em; margin-bottom: 12px;}
 
@@ -209,6 +218,7 @@ header {
 	text-transform:uppercase;
 	float:right;
 	clear:right;
+	margin-top: 40px;
 }
 
 footer {
@@ -245,7 +255,7 @@ div.menu ul li a {
 }
 .menu ul li, .menu ul li ul {
 	padding:0px 10px 5px 10px;
-	width:95px;
+	width:84px;
 }
 .menu ul li {
 	padding-top:20px;
@@ -360,20 +370,19 @@ div.menu ul li a {
 05 Sidebar Styles -------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
 
-ul#recent_posts {
+/*ul#recent_posts {
 	margin-top:16px;
 	padding-top:20px;
-}
+}*/
 
 ul#recent_posts li {
 	padding-bottom:15px;
 	margin-bottom: 20px;
 	border-bottom: solid 21px #56b2b7;
+	padding-top:25px;
+	display:inline-block;
 }
 
-ul#recent_posts li {
-	padding-top:25px;
-}
 ul#recent_posts li:first-child {
 	padding-top:0px;
 }
@@ -384,21 +393,25 @@ ul#recent_posts h1 {
 	font-weight: normal;
 	line-height: 1.1em;
 	margin-bottom: 10px;
+	text-transform: uppercase;
 }
 
-ul#recent_posts img { max-width: 100%; height: auto;}
-
-ul#recent_posts img.play_button {
-	position: absolute;
-	top: 62%;
-	left: 46%;
-	display:none;
+ul#recent_posts img {
+	max-width: 100%; 
+	height: auto;
+	margin-bottom:10px;
 }
+
 
 ul#recent_posts li p {
 	text-transform: none;
 	font-size: 0.875em;
 
+}
+
+#content ul#recent_posts li {
+	border-bottom:solid 1px #56b2b7;
+	width: 100%;
 }
 
 /* ---------------------------------------------------------------------------------------------------------- 
@@ -491,13 +504,6 @@ ul#recent_posts li p {
 09 Product Page Styles --------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
 
-h2.product_category {
-	clear:both;
-	font-family:'Helvetica W01 Blk', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	font-size: 1.125em;
-	text-transform:uppercase;
-	color: #fff;
-}
 h2.product_name {
 	font-family:'Helvetica W01 Bold', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-size: 1.5em;
@@ -577,6 +583,11 @@ time {
 /* ---------------------------------------------------------------------------------------------------------- 
 10 News Styles --------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------- */
+
+article img {
+	margin: 0 20px 10px 0;
+	float:left;
+}
 
 .nav-next {float:left;}
 .nav-previous {float:right;}
