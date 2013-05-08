@@ -39,6 +39,7 @@
 		<?php wp_reset_postdata(); // reset the query ?>
 
 	</ul>
+	<a href="<?php bloginfo('url'); ?>/news">More News</a>
 <!--  END RECENT POSTS -->
 
 </div>
