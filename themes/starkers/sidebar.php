@@ -26,7 +26,7 @@
 			<li <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 				<h1><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 				<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" >
-					<?php the_post_thumbnail(); ?>
+					<?php the_post_thumbnail('medium'); ?>
 				</a>
 				<?php the_excerpt(); ?>
 			</li>
