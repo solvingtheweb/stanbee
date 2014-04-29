@@ -4,50 +4,50 @@ jQuery(document).ready(function($){
      * Set input field values to default on blur if empty and ajax submit if changed
      * @since 1.0
      */
-    $('#fvp_video,#fvp_sec').blur(function() {
-        var t = $(this); // required to make use of it in ajax callback
+    $('#fvp_video').blur(function() {
+        t = $(this); // required to make use of it in ajax callback
 
         t.val( $.trim( t.val()) );
 
         value = t.val();
         if((value.length === 0)                          ||
-           (value == fvp_backend_data.default_value    ) ||
-           (value == fvp_backend_data.default_value_sec) ){
+           (value == fvp_backend_data.default_value    ) ){
             t.addClass("defaultTextActive");
-            if( t.is('#fvp_video') )
-                t.val( fvp_backend_data.default_value     );
-            else
-                t.val( fvp_backend_data.default_value_sec );
+            t.val( fvp_backend_data.default_value );
         }
         t.trigger('autosize');
 
         if( t.val() != t.siblings('.fvp_mirror').val() ) {
             bg = t.siblings('.fvp_video_choose').children('.fvp_media_icon').css('backgroundImage');
             t.siblings('.fvp_video_choose').children('.fvp_media_icon').css('backgroundImage', "url('"+fvp_backend_data.loading_gif+"')");
-            $('#fvp_current_video').css({'backgroundImage':"url('"+fvp_backend_data.loading_gif+"')",'width':'256px','height':'144px'});
+            $('#fvp_current_video').css({'backgroundImage':"url('"+fvp_backend_data.loading_gif+"')",'width':'256px'}).animate({'height':'144px'})
+                .children().animate({'opacity':0});
             $.post( ajaxurl,
                 {
                     'action'    : 'fvp_ajax',
                     'id'        : $('#post_ID').val(),
                     'fvp_nonce' : $('#fvp_nonce').val(),
-                    'fvp_video' : $('#fvp_video').val(),
-                    'fvp_sec'   : $('#fvp_sec').val()
+                    'fvp_video' : $('#fvp_video').val()
                 },
                 function(data) {
                     t.siblings('.fvp_mirror').val( t.val() );
                     t.siblings('.fvp_video_choose').children('.fvp_media_icon').css('backgroundImage', bg);
                     if(data.typ == 'removed'){
-                        $('#fvp_current_video').html('').css({'backgroundImage':'','width':'','height':''});
-                        $('#postimagediv .inside').html(data.img);
-                    } else
-                        if(data.valid) {
+                        $('#fvp_current_video').css({'backgroundImage':''}).animate({'height':'0px'});
+                        if( data.img != '' )
+                            $('#postimagediv .inside').html(data.img);
+                    } else {
+                        $('#fvp_current_video').html(data.video).animate({'height':'144px'});
+                        $("#fvp_help_notice").slideUp('fast');
+                        if (data.valid) {
                             $('#postimagediv .inside').html(data.img);
                             $("#fvp_set_featimg_link, #fvp_featimg_warning").slideUp().addClass("fvp_hidden");
-                            $('#fvp_current_video').html(data.video);
                             t.css('backgroundColor','#00FF00').animate({'backgroundColor':'white'}, 500, function() { t.css('backgroundColor',''); });
-                            $("#fvp_help_notice").slideUp('fast');
+                            if (data.prov == 'local' && fvp_backend_data.videojs)
+                                vjs = videojs('videojs'+data.id,{},function(){});
                         } else
                             t.addClass('fvp_invalid');
+                    }
                 }, "json"
             );
         }
@@ -59,8 +59,7 @@ jQuery(document).ready(function($){
      */
     $(".fvp_input").focus(function() {
         value = $(this).val();
-        if((value == fvp_backend_data.default_value    ) ||
-           (value == fvp_backend_data.default_value_sec) ){
+        if( value == fvp_backend_data.default_value ){
             $(this).removeClass("defaultTextActive");
             $(this).val("");
         }
@@ -85,14 +84,31 @@ jQuery(document).ready(function($){
     });
 
     /**
-     * hide secondary input initially
+     * Called when a change on the primary video input occurred
      * @since 1.2
      */
-    if ($("#fvp_video").length > 0){
-        var value = $("#fvp_video").val();
-        if ( value.length === 0 || value == fvp_backend_data.default_value || !value.match( fvp_backend_data.wp_upload_dir.replace(/\//g, "\\\/") ) ) {
-            $("#fvp_sec").val( fvp_backend_data.default_value_sec );
-            $("#fvp_sec_wrapper").hide();
+    function handleVideoInput( obj ) {
+        var value = $.trim(obj.val());
+        $("#fvp_help_notice").slideDown('fast');
+
+        if ( value.length === 0 || value == fvp_backend_data.default_value ) {
+            $("#fvp_video").removeClass('fvp_invalid'); //css('backgroundColor', 'white');
+            $("#fvp_localvideo_format_warning").slideUp('fast');
+        }
+
+        if ( value.match( fvp_backend_data.wp_upload_dir.replace(/\//g, "\\\/") ) ) {
+            var file_extension = /^.*\/(.*)\.(.*)/g;
+            var match = file_extension.exec(value);
+            if ( match[2] == 'webm' || match[2] == 'mp4' || match[2] == 'ogg' || match[2] == 'ogv' ) {
+                $("#fvp_video").removeClass('fvp_invalid'); //.css('backgroundColor', 'white');
+                $("#fvp_localvideo_format_warning").slideUp('fast');
+            } else {
+                $("#fvp_video").addClass('fvp_invalid'); //css('backgroundColor', 'lightYellow');
+                $("#fvp_localvideo_format_warning").slideDown('fast', 'linear');
+            }
+        } else {
+            $("#fvp_video").removeClass('fvp_invalid'); //.css('backgroundColor', 'white');
+            $("#fvp_localvideo_format_warning").slideUp('fast');
         }
     }
 
@@ -103,96 +119,6 @@ jQuery(document).ready(function($){
     $("#fvp_video").bind("change paste keyup", function() {
         setTimeout(handleVideoInput($(this)), 200);
     });
-
-    /**
-     * Called when a change on the primary video input occurred
-     * @since 1.2
-     */
-    function handleVideoInput( obj ) {
-        var value = $.trim(obj.val());
-        var sec   = $.trim($('#fvp_sec').val());
-        $("#fvp_help_notice").slideDown('fast');
-
-        if ( value.length === 0 || value == fvp_backend_data.default_value ) {
-            $("#fvp_video").removeClass('fvp_invalid'); //css('backgroundColor', 'white');
-            $("#fvp_sec").val( fvp_backend_data.default_value_sec ).blur();
-            $("#fvp_sec_wrapper").slideUp('fast');
-            $("#fvp_localvideo_format_warning").slideUp('fast');
-        }
-
-        if ( value.match( fvp_backend_data.wp_upload_dir.replace(/\//g, "\\\/") ) ) {
-            var file_extension = /^.*\/(.*)\.(.*)$/g;
-            var match = file_extension.exec(value);
-            if ( match[2] == 'webm' || match[2] == 'mp4' || match[2] == 'ogg' || match[2] == 'ogv' ) {
-                $("#fvp_sec_wrapper").slideDown('fast');
-                $("#fvp_video").removeClass('fvp_invalid'); //.css('backgroundColor', 'white');
-                $("#fvp_localvideo_format_warning").slideUp('fast');
-            } else {
-                $("#fvp_sec").val( fvp_backend_data.default_value_sec ).blur();
-                $("#fvp_sec_wrapper").slideUp('fast');
-                $("#fvp_video").addClass('fvp_invalid'); //css('backgroundColor', 'lightYellow');
-                $("#fvp_localvideo_format_warning").slideDown('fast', 'linear');
-            }
-            distinctContent();
-        } else {
-            $("#fvp_sec_wrapper").slideUp('fast');
-            $("#fvp_video").removeClass('fvp_invalid'); //.css('backgroundColor', 'white');
-            $("#fvp_localvideo_format_warning").slideUp('fast');
-        }
-    }
-
-    /**
-     * recognize change on the secondary video input
-     * @since 1.2
-     */
-    $("#fvp_sec").bind("change paste keyup", function() {
-        setTimeout(handleSecInput($(this)), 200);
-    });
-
-    /**
-     * Called when a change on the primary video input occurred
-     * @since 1.2
-     */
-    function handleSecInput( obj ) {
-        var value = $.trim(obj.val());
-        var prim  = $.trim($('#fvp_video').val());
-
-        if ( value.length === 0 || value == fvp_backend_data.default_value ) {
-            $("#fvp_localvideo_format_warning").slideUp('fast');
-            $("#fvp_sec").removeClass('fvp_invalid'); //.css('backgroundColor', 'white');
-        }
-
-        if ( value.match( fvp_backend_data.wp_upload_dir.replace(/\//g, "\\\/") ) ) {
-            var file_extension = /^.*\/(.*)\.(.*)$/g;
-            var match = file_extension.exec(value);
-            if ( match[2] == 'webm' || match[2] == 'mp4' || match[2] == 'ogg' || match[2] == 'ogv' ) {
-                $("#fvp_sec").removeClass('fvp_invalid'); //.css('backgroundColor', 'white');
-                $("#fvp_localvideo_format_warning").slideUp('fast');
-                distinctContent();
-            } else {
-                $("#fvp_sec").addClass('fvp_invalid'); //.css('backgroundColor', 'lightYellow');
-                $("#fvp_localvideo_format_warning").slideDown('fast');
-            }
-        } else if (value.length !== 0) {
-            $("#fvp_sec").addClass('fvp_invalid'); //.css('backgroundColor', 'lightYellow');
-            $("#fvp_localvideo_notdistinct_warning").slideDown('fast');
-        }
-
-    }
-
-    /**
-     * Compares the two input boxes if they contain the same URL
-     * @since 1.2
-     */
-    function distinctContent() {
-        if ( $.trim( $('#fvp_video').val() ) == $.trim( $('#fvp_sec').val() ) ) {
-            $("#fvp_sec").addClass('fvp_invalid'); //.css('backgroundColor', 'lightYellow');
-            $("#fvp_localvideo_notdistinct_warning").slideDown('fast');
-        } else {
-            $("#fvp_localvideo_notdistinct_warning").slideUp('fast');
-            $("#fvp_sec").removeClass('fvp_invalid'); //.css('backgroundColor', 'white');
-        }
-    }
 
     /**
      * set featured image link and featured image requirement warning
@@ -209,8 +135,7 @@ jQuery(document).ready(function($){
                 'action'    : 'fvp_ajax',
                 'id'        : $('#post_ID').val(),
                 'fvp_nonce' : $('#fvp_nonce').val(),
-                'fvp_video' : $('#fvp_video').val(),
-                'fvp_sec'   : $('#fvp_sec').val()
+                'fvp_video' : $('#fvp_video').val()
             },
             function (data) {
                 $('#postimagediv .inside').html(data.img);
@@ -272,6 +197,7 @@ jQuery(document).ready(function($){
                 returnProperty = 'url';
 
             $( $control.data('target') ).val( selection.pluck( returnProperty ) ).trigger('autosize').change().removeClass("defaultTextActive");
+            $('#fvp_video').blur();
         },
 
         updateFrame: function() {

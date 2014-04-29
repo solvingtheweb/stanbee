@@ -3,7 +3,6 @@
  * Class containing functions required WordPress administration panels. Metabox on post/page edit views and options section under settings->media.
  *
  * @author ahoereth
- * @version 2013/03/27
  * @see ../featured_video_plus.php
  * @see featured_video_plus in general.php
  * @since 1.0
@@ -28,9 +27,9 @@ class featured_video_plus_backend {
 		if ( !isset($featured_video_plus_instance) )
 			wp_die( 'featured_video_plus general instance required!', 'Error!' );
 
-		$this->featured_video_plus 	= $featured_video_plus_instance;
-		$this->default_value 		= __('Video URL', 'featured-video-plus');
-		$this->default_value_sec 	= __('Fallback: same video, different format', 'featured-video-plus');
+		$this->featured_video_plus = $featured_video_plus_instance;
+		$this->default_value 			 = __('Video URL', 'featured-video-plus');
+		$this->default_value_sec 	 = __('Fallback: same video, different format', 'featured-video-plus');
 	}
 
 	/**
@@ -43,6 +42,7 @@ class featured_video_plus_backend {
 	 * @since 1.0
 	 */
 	public function enqueue($hook_suffix) {
+		$min = SCRIPT_DEBUG ? '' : '.min';
 		// just required on options-media.php and would produce errors pre WordPress 3.1
 		if( ($hook_suffix == 'options-media.php') && (get_bloginfo('version') >= 3.1) ) {
 			if( wp_style_is( 'wp-color-picker', 'registered' ) ) {
@@ -55,29 +55,30 @@ class featured_video_plus_backend {
 				wp_enqueue_script( 'farbtastic' );
 				wp_enqueue_script( 'fvp_backend_pre35', FVP_URL . 'js/backend_pre35.js', array( 'jquery' ), FVP_VERSION );
 			}
-			wp_enqueue_script( 'fvp_backend_settings', FVP_URL . 'js/backend_settings.js', array( 'jquery' ), FVP_VERSION );
+			wp_enqueue_script( 'fvp_settings', FVP_URL . 'js/settings.js', array( 'jquery' ), FVP_VERSION );
 		}
 
-		// just required on post.php
+		// just required on post.php and post-new.php
 		if( ($hook_suffix == 'post.php' && isset($_GET['post'])) || $hook_suffix == 'post-new.php' ) {
-			wp_enqueue_script( 'jquery.autosize', FVP_URL . 'js/jquery.autosize-min.js', array( 'jquery' ), FVP_VERSION );
-			wp_enqueue_script( 'fvp_backend', FVP_URL . 'js/backend-min.js', array( 'jquery','jquery.autosize' ), FVP_VERSION ); 	// production
-			//wp_enqueue_script( 'fvp_backend', FVP_URL . 'js/backend.js', array( 'jquery','jquery.autosize'), FVP_VERSION ); 		// development
+			wp_enqueue_script( 'jquery.autosize', FVP_URL . "js/jquery.autosize$min.js", array( 'jquery' ), FVP_VERSION );
+			wp_enqueue_script( 'fvp_backend', FVP_URL . "js/backend$min.js", array( 'jquery','jquery.autosize' ), FVP_VERSION );
 
-			$wp_35 = get_bloginfo('version') >= 3.5 ? true : false;
+			wp_enqueue_style( 'wp-mediaelement' );
+			wp_enqueue_script( 'wp-mediaelement' );
+
+			$options = get_option('fvp-settings');
 			$upload_dir = wp_upload_dir();
 			wp_localize_script( 'fvp_backend', 'fvp_backend_data', array(
-				'wp_upload_dir' 	=> $upload_dir['baseurl'],
-				'loading_gif' 		=> get_admin_url(null,'images/loading.gif'),
-				'default_value' 	=> $this->default_value,
+				'wp_upload_dir' 		=> $upload_dir['baseurl'],
+				'loading_gif' 			=> get_admin_url(null,'images/loading.gif'),
+				'default_value' 		=> $this->default_value,
 				'default_value_sec' => $this->default_value_sec,
-				'wp_35' 			=> $wp_35
+				'wp_35' 						=> get_bloginfo('version') >= 3.5
 			) );
 		}
 
 		if( $hook_suffix == 'options-media.php' || (($hook_suffix == 'post.php' && isset($_GET['post'])) || $hook_suffix == 'post-new.php') )
-			wp_enqueue_style( 'fvp_backend', FVP_URL . 'css/backend-min.css', array(), FVP_VERSION ); 	// production
-			//wp_enqueue_style( 'fvp_backend', FVP_URL . 'css/backend.css', array(), FVP_VERSION ); 		// development
+			wp_enqueue_style( 'fvp_backend', FVP_URL . "css/backend$min.css", array(), FVP_VERSION );
 	}
 
 	/**
@@ -123,38 +124,26 @@ class featured_video_plus_backend {
 			printf ('<div class="fvp_warning"><p class="description"><strong>'.__('Outdated WordPress Version', 'featured-video-plus').':</strong>&nbsp'.__('There is WordPress 3.5 out there! The plugin supports older versions way back to 3.1 - but %s is defenitly to old!', 'featured-video-plus').'</p></div>', get_bloginfo('version') );
 
 		// current featured video
-		echo '<div id="fvp_current_video" style="background: no-repeat center center;">'; //url(\''.get_admin_url(null,'images/loading.gif').'\')
+		$hide = $has_post_video ? '' : ' height:0px;';
+		echo '<div id="fvp_current_video" style="background: no-repeat center center;'.$hide.'">'; //url(\''.get_admin_url(null,'images/loading.gif').'\')
 		if( $has_post_video )
 			echo get_the_post_video( $post_id, array(256,144) );
 		echo '</div>'."\n\n";
 
 		// input box containing the featured video URL
-		$legal= isset($meta['valid']) && !$meta['valid'] ? ' fvp_invalid' : '';
+		$legal= isset($meta['valid']) && !$meta['valid'] && isset($meta['full']) && !empty($meta['full']) ? ' fvp_invalid' : '';
 		$full = isset($meta['prov']) && $meta['prov'] == 'local' ? wp_get_attachment_url($meta['id']) : isset($meta['full']) ? $meta['full'] : $this->default_value;
 		echo '<div class="fvp_input_wrapper" data-title="'.__('Set Featured Video', 'featured-video-plus').'" data-button="'.__('Set featured video', 'featured-video-plus').'" data-target="#fvp_video">'."\n\t";
 		echo '<textarea class="fvp_input'.$legal.'" id="fvp_video" name="fvp_video" type="text">' . $full . '</textarea>' . "\n\t";
 		echo '<input type="hidden" class="fvp_mirror" value="'.$full."\" />\n\t";
-		if( !(get_bloginfo('version') < 3.5) )
-			echo '<a href="#" class="fvp_video_choose"><span class="fvp_media_icon" style="background-image: url(\''.get_bloginfo('wpurl').'/wp-admin/images/media-button.png\');"></span></a>'."\n";
-		echo "</div>\n";
 
-		$sec   =  isset($meta['sec']) && !empty($meta['sec']) ? wp_get_attachment_url($meta['sec_id']) : $this->default_value_sec;
-		$class = !isset($meta['sec']) ||  empty($meta['sec']) ? ' defaultTextActive' : '';
-		echo '<div class="fvp_input_wrapper" id="fvp_sec_wrapper" data-title="'.__('Set Featured Video Fallback', 'featured-video-plus').'" data-button="'.__('Set featured video fallback', 'featured-video-plus').'" data-target="#fvp_sec">'."\n\t";
-		echo '<textarea class="fvp_input'.$class.'" id="fvp_sec" name="fvp_sec" type="text">' . $sec . '</textarea>' . "\n\t";
-		echo '<input type="hidden" class="fvp_mirror" value="'.$sec."\" />\n\t";
-		if( !(get_bloginfo('version') < 3.5) )
-			echo '<a href="#" class="fvp_video_choose"><span class="fvp_media_icon" style="background-image: url(\''.get_bloginfo('wpurl').'/wp-admin/images/media-button.png\');"></span></a>'."\n";
+		$style = get_bloginfo('version') >= 3.5 ? 'style="background-image: url(\''.get_bloginfo('wpurl').'/wp-admin/images/media-button.png\');"': '';
+		echo '<a href="#" class="fvp_video_choose"><span class="fvp_media_icon"'.$style.'></span></a>'."\n";
 		echo "</div>\n";
 
 		// local video format warning
 		echo '<div id="fvp_localvideo_format_warning" class="fvp_warning fvp_hidden">'."\n\t".'<p class="description">'."\n\t\t";
-		echo '<span style="font-weight: bold;">'.__('Supported Video Formats', 'featured-video-plus').':</span> <code>mp4</code>, <code>webM</code> '.__('or', 'featured-video-plus').' <code>ogg/ogv</code>. <a href="http://wordpress.org/extend/plugins/featured-video-plus/faq/">'.__('More information', 'featured-video-plus').'</a>.';
-		echo "\n\t</p>\n</div>\n";
-
-		// local videos not distinct warning
-		echo '<div id="fvp_localvideo_notdistinct_warning" class="fvp_warning fvp_hidden">'."\n\t".'<p class="description">'."\n\t\t";
-		echo '<span style="font-weight: bold;">'.__('Fallback Video', 'featured-video-plus').':</span>&nbsp;'.__('The two input fields should contain the same video but in distinct formats.', 'featured-video-plus');
+		echo '<span style="font-weight: bold;">'.__('Supported Video Formats', 'featured-video-plus').':</span> <code>mp4</code>, <code>webM</code>, <code>m4v</code>, <code>wmv</code>, <code>flv</code> '.__('or', 'featured-video-plus').' <code>ogv</code>. <a href="http://wordpress.org/extend/plugins/featured-video-plus/faq/">'.__('More information', 'featured-video-plus').'</a>.';
 		echo "\n\t</p>\n</div>\n";
 
 		// how to use a local videos notice
@@ -165,7 +154,7 @@ class featured_video_plus_backend {
 		echo "\n\t</p>\n</div>\n";
 
 		// no featured image warning
-		$class = $has_featimg || !$has_post_video || (isset($options['overwrite']) && !$options['overwrite']) ? ' fvp_hidden' : '';
+		$class = $has_featimg || !$has_post_video || (isset($options['usage']) && $options['usage'] == 'manual') ? ' fvp_hidden' : '';
 		echo '<div id="fvp_featimg_warning" class="fvp_notice'.$class.'">'."\n\t".'<p class="description">';
 		echo '<span style="font-weight: bold;">'.__('Featured Image').':</span>&nbsp;'.__('For automatically displaying the Featured Video a Featured Image is required.', 'featured-video-plus');
 		echo "</p>\n</div>\n";
@@ -175,7 +164,7 @@ class featured_video_plus_backend {
 		printf('<p id="fvp_set_featimg_box"'.$class.'>'."\n\t".'<span id="fvp_set_featimg_input">'."\n\t\t".'<input id="fvp_set_featimg" name="fvp_set_featimg" type="checkbox" value="set_featimg" />'."\n\t\t".'<label for="fvp_set_featimg">&nbsp;%s</label>'."\n\t".'</span>'."\n\t".'<a class="fvp_hidden" id="fvp_set_featimg_link" href="#">%s</a>'."\n".'</p>'."\n", __('Set as Featured Image', 'featured-video-plus'), __('Set as Featured Image', 'featured-video-plus') );
 
 		// current theme does not support Featured Images
-		if( !current_theme_supports('post-thumbnails') && $options['overwrite'] )
+		if( !current_theme_supports('post-thumbnails') && $options['overwrite'] != 'manual' )
 			echo '<p class="fvp_warning description"><span style="font-weight: bold;">'.__('The current theme does not support Featured Images', 'featured-video-plus').':</span>&nbsp;'.sprintf(__('To display Featured Videos you need to use the <code>Shortcode</code> or <code>PHP functions</code>. To hide this notice deactivate &quot;<em>Replace Featured Images</em>&quot; in the %sMedia Settings%s.', 'featured-video-plus'), '<a href="'.get_admin_url(null, '/options-media.php').'">', '</a>' )."</p>\n\n";
 
 		echo "<!-- Featured Video Plus Metabox End-->\n\n\n";
@@ -210,23 +199,21 @@ class featured_video_plus_backend {
 
 	public function ajax() {
 		$post = array(
-			'id' 				=> $_POST['id'],
-			'fvp_nonce' 		=> isset($_POST['fvp_nonce']) 		? $_POST['fvp_nonce'] 		: '',
-			'fvp_set_featimg' 	=> isset($_POST['fvp_set_featimg']) ? $_POST['fvp_set_featimg'] : '',
-			'fvp_video' 		=> isset($_POST['fvp_video']) 		? $_POST['fvp_video'] 		: '',
-			'fvp_sec' 			=> isset($_POST['fvp_sec']) 		? $_POST['fvp_sec'] 		: ''
+			'id' 							=> $_POST['id'],
+			'fvp_nonce' 			=> isset($_POST['fvp_nonce']) 		? $_POST['fvp_nonce'] 		: '',
+			'fvp_set_featimg' => isset($_POST['fvp_set_featimg']) ? $_POST['fvp_set_featimg'] : '',
+			'fvp_video' 			=> isset($_POST['fvp_video']) 		? $_POST['fvp_video'] 		: '',
+			'fvp_sec' 				=> isset($_POST['fvp_sec']) 		? $_POST['fvp_sec'] 		: ''
 		);
 		$meta = $this->save($post);
 
 		$img = _wp_post_thumbnail_html( get_post_thumbnail_id($post['id']), $post['id'] );
 
-		if(isset($meta['id'])) {
-			if( has_post_video($post['id']) )
-				$video = get_the_post_video( $post['id'], array(256,144) );
-
-			echo json_encode(array( 'typ' => 'updated', 'valid' => $meta['valid'], 'video' => $video, 'img' => $img ));
+		if (has_post_video($post['id'])){
+			$video = get_the_post_video( $post['id'], array(256,144) );
+			echo json_encode(array( 'typ' => 'updated', 'valid' => $meta['valid'], 'video' => $video, 'img' => $img, 'prov' => $meta['prov'], 'id' => $meta['id'] ));
 		} else
-			echo json_encode(array( 'typ' => 'removed', 'img' => $img ));
+			echo json_encode(array( 'typ' => 'removed', 'valid' => $meta['valid'], 'img' => $img ));
 		die();
 	}
 
@@ -238,7 +225,6 @@ class featured_video_plus_backend {
 	 * @see http://codex.wordpress.org/Function_Reference/update_post_meta
 	 */
 	function save($post) {
-
 		if( ( isset($post['fvp_nonce']) && 							// WP Form submitted..
 			  !wp_verify_nonce( $post['fvp_nonce'], FVP_NAME ) ) )
 			return false;
@@ -272,34 +258,24 @@ class featured_video_plus_backend {
 
 		$data = $this->get_video_data($url, $sec);
 
-		$valid = true;
-		if( !isset($data['id']) ) {
-			$meta['valid'] = false;
-			$meta['full']  = $url;
-			$meta['sec' ]  = $sec;
-		} else {
-
-			// Do we have a screen capture to pull?
-			if( isset($data['img']) && !empty($data['img']) ) {
-						$this->delete_featured_video_image( $post['id'], $meta );
-				$img = 	$this->set_featured_video_image(	$post['id'], $data );
-			}
-
-			$meta = array(
-				'full' 	=> isset($data['url']) 		&& !empty($data['url']) 	? $data['url'] : $url,
-				'id' 	=> isset($data['id']) 			? $data['id'] : '',
-				'sec' 	=> isset($data['sec']) 			? $data['sec'] : '',
-				'sec_id'=> isset($data['sec_id']) 	&& !empty($data['sec_id']) 		? $data['sec_id'] 	 : '',
-				'img' 	=> isset($img) ? $img : '',
-				'prov' 	=> isset($data['provider']) 	? $data['provider'] : '',
-				'time' 	=> isset($data['time']) 		? $data['time'] : '',
-				'valid' => $valid
-			);
-
+		$url = isset($data['url']) && !empty($data['url']) 	? $data['url'] 	 : $url;
+		// Do we have a screen capture to pull?
+		if( isset($data['img']) && !empty($data['img']) ) {
+			$this->delete_featured_video_image( $post['id'], $meta );
+			$img = 	$this->set_featured_video_image(	$post['id'], $data );
 		}
 
-		update_post_meta( $post['id'], '_fvp_video', $meta );
+		$meta = array(
+			'full' 	=> $url,
+			'id' 		=> isset($data['id']) 			?  $data['id'] 			 : '',
+			'sec' 	=> isset($data['sec']) 			?  $data['sec'] 		 : '',
+			'img' 	=> isset($img) ? $img : '',
+			'prov' 	=> isset($data['provider']) ?  $data['provider'] : '',
+			'time' 	=> isset($data['time']) 		?  $data['time'] 		 : '',
+			'valid' => isset($data['valid']) 		?  $data['valid'] 	 : true
+		);
 
+		update_post_meta( $post['id'], '_fvp_video', $meta );
 		return $meta;
 	}
 
@@ -313,7 +289,7 @@ class featured_video_plus_backend {
 	 */
 	function get_video_data($url, $sec = '') {
 		$local = wp_upload_dir();
-		preg_match('/(vimeo|youtu|dailymotion|liveleak|'.preg_quote($local['baseurl'], '/').')/i', $url, $prov_data);
+		preg_match('/(vimeo|youtu|dailymotion|liveleak|blip|hulu|'.preg_quote($local['baseurl'], '/').')/i', $url, $prov_data);
 		if( isset($prov_data[1]) )
 			$provider = $prov_data[1];
 		else return false;
@@ -322,22 +298,13 @@ class featured_video_plus_backend {
 
 			// local video
 			case $local['baseurl']:
+				$ext_legal = array( 'mp4', 'm4v', 'webm', 'ogv', 'wmv', 'flv' );
+
 				$ext = pathinfo( $url, PATHINFO_EXTENSION );
-				if( !isset($ext) || ($ext != 'mp4' && $ext != 'ogv' && $ext != 'webm' && $ext != 'ogg') ) return; // wrong extension
+				if( empty( $ext ) || ! in_array( $ext, $ext_legal ) ) return; // wrong extension
 
-				$data['id'] 		= $this->get_post_by_url($url);
-				$data['provider'] 	= 'local';
-
-				if( !empty($sec) ) {
-					preg_match('/(' . preg_quote($local['baseurl'], '/') . ')/i', $sec, $sec_prov_data);
-					$ext2 = pathinfo( $sec, PATHINFO_EXTENSION );
-					if ( isset($sec_prov_data[1]) && isset($ext2) && $sec_prov_data[1] == $provider && $ext != $ext2 &&
-					   ($ext2 == 'mp4' || $ext2 == 'ogv' || $ext2 == 'webm' || $ext2 == 'ogg')) {
-						$data['sec_id'] = $this->get_post_by_url($sec);
-						$data['sec'] 	= $sec;
-					}
-				}
-
+				$data['id']       = $this->get_post_by_url($url);
+				$data['provider'] = 'local';
 				break;
 
 			// youtube.com
@@ -357,8 +324,15 @@ class featured_video_plus_backend {
 				if( is_wp_error( $response ) )
 					break;
 				parse_str( $response['body'], $result );
-				if( isset($result['status']) && $result['status'] == 'fail' )
+				if (isset($result['status']) && $result['status'] == 'fail'){
+					$data = array(
+						'id' 			 => $video_id,
+						'provider' => $provider,
+						'url' 		 => $url,
+						'api' 		 => false
+					);
 					break;
+				}
 
 				// extract info of a time-link
 				preg_match('/t=(?:(\d+)m)?(?:(\d+)s)?/', $url, $attr);
@@ -376,11 +350,11 @@ class featured_video_plus_backend {
 
 				// generate video metadata
 				$data = array(
-					'id' 			=> $video_id,
-					'provider' 		=> $provider,
+					'id' 				=> $video_id,
+					'provider' 	=> $provider,
 					'time' 			=> $video_time,
 					'title' 		=> $result['title'],
-					'description' 	=> $result['keywords'],
+					'description' => $result['keywords'],
 					'filename' 		=> sanitize_file_name($result['title']),
 					'timestamp' 	=> $result['timestamp'],
 					'author' 		=> $result['author'],
@@ -476,6 +450,18 @@ class featured_video_plus_backend {
 
 				break;
 
+/*			case 'blip':
+			case 'hulu':
+				$valid = true;
+				if (!wp_oembed_get( $url ))
+					$valid = false;
+
+				$data = array(
+					'url' 	=> $url,
+					'valid' => $valid
+				);
+				break;*/
+
 			// liveleak.com
 			// no API provided, the plugin pulls the website and gets the video
 			// source url and other metadata from the source code.
@@ -506,16 +492,16 @@ class featured_video_plus_backend {
 					$result['title'] = isset($title[1]) ? $title[1] : '';
 
 					$data = array(
-						'id' 			=> $video_id,
+						'id' 					=> $video_id,
 						'provider' 		=> $provider,
-						'title' 		=> $result['title'],
-						'description' 	=> isset($desc[1]) ? $desc[1] : '',
+						'title' 			=> $result['title'],
+						'description' => isset($desc[1]) ? $desc[1] : '',
 						'filename' 		=> sanitize_file_name($result['title']),
 						'timestamp' 	=> time(),
 						//'author' 		=> '', // <strong>By:</strong> <a href="http://www.liveleak.com/c/k-doe">k-doe</a>
 						//'tags' 			=> '', // <strong>Tags:</strong> <a href="browse?q=Drive By">Drive By</a>, <a href="browse?q=Fire Extinguisher">Fire Extinguisher</a><br />
-						'img' 			=> isset($result['image']) ? trim($result['image'],"\"") : '',
-						'url' 			=> 'http://liveleak.com/view?i='.$video_data[1]
+						'img' 				=> isset($result['image']) ? trim($result['image'],"\"") : '',
+						'url' 				=> 'http://liveleak.com/view?i='.$video_data[1]
 					);
 					break;
 				}
@@ -536,6 +522,9 @@ class featured_video_plus_backend {
 						);
 					}
 					break;
+
+				default:
+					break;
 		}
 		return isset($data) ? $data : false;
 	}
@@ -553,7 +542,7 @@ class featured_video_plus_backend {
 
 			// Generate attachment post metadata
 			$img_data = array(
-				'post_content' 	=> $data['description'],
+				'post_content'=> $data['description'],
 				'post_title' 	=> $data['title'],
 				'post_name' 	=> $data['filename']
 			);
@@ -565,16 +554,16 @@ class featured_video_plus_backend {
 			// generate picture metadata
 			$img_meta = wp_get_attachment_metadata( $img );
 			$img_meta['image_meta'] = array(
-				'aperture' 			=> 0,
-				'credit' 			=> $data['id'],
-				'camera' 			=> $data['provider'],
-				'caption' 			=> $data['description'],
+				'aperture' 					=> 0,
+				'credit' 						=> $data['id'],
+				'camera' 						=> $data['provider'],
+				'caption' 					=> $data['description'],
 				'created_timestamp' => $data['timestamp'],
-				'copyright' 		=> $data['author'],
-				'focal_length' 		=> 0,
-				'iso' 				=> 0,
-				'shutter_speed' 	=> 0,
-				'title' 			=> $data['title']
+				'copyright' 				=> $data['author'],
+				'focal_length' 			=> 0,
+				'iso' 							=> 0,
+				'shutter_speed' 		=> 0,
+				'title' 						=> $data['title']
 			);
 
 			// save picture metadata
@@ -591,13 +580,13 @@ class featured_video_plus_backend {
 	}
 
 	/**
-	 * Removes the old featured ima
+	 * Removes the old featured image
 	 * Used since 1.0, got it own function in 1.4
 	 *
 	 * @since 1.4
 	 */
 	function delete_featured_video_image($post_id, $meta) {
-		if(!isset($meta['img'])) return false;
+		if(!isset($meta['img'])||empty($meta['img'])) return false;
 
 		// Unset featured image if it is from this video
 		delete_post_meta( $post_id, '_thumbnail_id', $meta['img'] );
@@ -610,57 +599,52 @@ class featured_video_plus_backend {
 		}
 	}
 
-/**
- * Plugin Version, WordPress Version and WordPress Language.
- * Less than WordPress.org, but much more informative for future development.
- *
- * @since 1.4
- *
- * @param bool $out set to true when oppting out
- */
-function featured_video_plus_notify($options, $out = null) {
-	if($options['out'] == 1 && $out != 0)
-		return $options;
-
-	if( ($out !== null && $out != $options['out']) || isset($notice) || !isset($options['reged']) || !is_numeric($options['reged']) || ($options['reged']<strtotime("-1 week")) ) {
-		$options['out'] = $out == 1 ? 1 : 0;
-		$attr = array('body'=> array(
-			'fvp_version' 	=> FVP_VERSION,
-			'wp_version' 	=> get_bloginfo('version'),
-			'wp_language' 	=> get_bloginfo('language'),
-			'out' 			=> $options['out']
-		));
-		$response = wp_remote_post( 'http://fvp.ahoereth.yrnxt.com/fvp.php', $attr);
-		if( !is_wp_error( $response ) )
-			$options['reged'] = is_numeric($response['body']) ? $response['body'] : time();
-	}
-	return $options;
-}
-
 	/**
+	 *
+	 * @since 1.7
+	 */
+	public function ajax_get_embed(){
+		header( "Content-Type: application/json" );
+
+		if (!isset( $_POST['nonce'] ) ||
+				!wp_verify_nonce( $_POST['nonce'], 'featured-video-plus-nonce' )){
+			json_encode(array('success' => false, 'html' => 'invalid nonce'));
+			exit();
+		}
+
+		if (has_post_video($_POST['id'])){
+			$meta = get_post_meta($_POST['id'], '_fvp_video', true);
+
+			$video = get_the_post_video( $_POST['id'] );
+			echo json_encode(array('success' => 'true', 'html' => $video, 'id' => $meta['id']));
+		} else{
+			$image = get_the_post_thumbnail($_POST['id']);
+			echo json_encode(array('success' => 'false','html' => $image));
+		}
+		exit;
+	}
+
+	/*
 	 * Initializes the help texts.
 	 *
 	 * @since 1.3
 	 */
 	public function help() {
 		$mediahref 	= (get_bloginfo('version') >= 3.5) ? '<a href="#" class="insert-media" title="Add Media">' : '<a href="media-upload.php?post_id=4&amp;type=video&amp;TB_iframe=1&amp;width=640&amp;height=207" id="add_video" class="thickbox" title="Add Video">';
-		$general 	= (get_bloginfo('version') >= 3.5) ? sprintf( __('To use local videos, copy the <code>Link To Media File</code> from your %sMedia Library%s and paste it into the text field.', 'featured-video-plus'), $mediahref, '</a>' ) :
-														 sprintf( __('To use local videos, copy the <code>File URL</code> from your %sMedia Library%s and paste it into the text field.', 			 'featured-video-plus'), $mediahref, '</a>' );
+		$general 	= (get_bloginfo('version') >= 3.6) ? sprintf( __('To use local videos, copy the <code>Link To Media File</code> from your %sMedia Library%s and paste it into the text field.', 'featured-video-plus'), $mediahref, '</a>' ) :
+														 sprintf( __('To use local videos as Featured Videos WordPress 3.6 or higher is required.', 'featured-video-plus'), $mediahref, '</a>' );
 
 		$this->help_localmedia = '
 <h4 style="margin-bottom: 0;"></h4>
-<p>'.$general.'&nbsp;'.__('The second text field is intended to hold the URL to the same video in a different format. It will be used as fallback if the primary file can not be played.','featured-video-plus').'&nbsp;<a href="http://videojs.com/#section4" target="_blank">'.__('More information','featured-video-plus').'</a>.</p>
+<p>'.$general.'</p>
 <h4 style="margin-bottom: 0;">'.__('Supported Video Formats','featured-video-plus').':</h4>
-<p style="margin-top: 0;"><code>webM</code>, <code>mp4</code>, <code>ogg/ogv</code></p>
+<p style="margin-top: 0;"><code>webM</code>, <code>mp4</code>, <code>ogv</code>, <code>m4v</code>, <code>wmv</code>, <code>flv</code></p>
 <h4 style="margin-bottom: 0;">'.__('Converting your videos','featured-video-plus').':</h4>
 <p style="margin-top: 0;">'.sprintf(__('Take a look at the %sMiro Video Converter%s. It is open source, lightweight and compatible with Windows, Mac and Linux.','featured-video-plus'),'<a href="http://www.mirovideoconverter.com/" target="_blank">','</a>').'</p>
 <h4 style="margin-bottom: 0;">'.__('Fixing upload errors','featured-video-plus').':</h4>
 <ul style="margin-top: 0;">
 <li>'.sprintf(__('Read %sthis%s on how to increase the <strong>maximum file upload size</strong>.','featured-video-plus'),'<a href="http://www.wpbeginner.com/wp-tutorials/how-to-increase-the-maximum-file-upload-size-in-wordpress/" target="_blank">','</a>').'</li>
-<li>'.sprintf(__('WordPress by default does not support <code>webM</code>. The plugin activates it, but under some conditions this might not be enough. %sHere%s you can get more information on this.','featured-video-plus'),'<a href="http://ottopress.com/2011/howto-html5-video-that-works-almost-everywhere/" target="_blank">','</a>').'</li>
-</ul>
-<h4 style="margin-bottom: 0;">'.__('Flash Fallback','featured-video-plus').':</h4>
-<p style="margin-top: 0;">'.sprintf(__('The video player, %sVIDEOJS%s, features an Adobe Flash fallback. All you need to do is provide an <code>mp4</code>-video.', 'featured-video-plus'),'<a href="http://videojs.com/" target="_blank">','</a>')."</p>\n";
+</ul>'."\n";
 
 		$dir = wp_upload_dir();
 		$this->help_urls = '
@@ -676,9 +660,8 @@ function featured_video_plus_notify($options, $out = null) {
 	<ul><li><code>(http(s)://)(www.)<strong>vimeo.com/<em>UNIQUEID</em></strong>(#stuff)</code></li></ul></li>
 	<li>Dailymotion:
 	<ul><li><code>(http(s)://)(www.)<strong>dailymotion.com/video/<em>UNIQUEID</em></strong>(_video_title)(#stuff)</code></li></ul></li>
-	<li>Liveleak:
-	<ul><li><code>(http(s)://)(www.)<strong>liveleak.com/view?i=<em>LIV_ELEAKUNQID</em></strong></code></li></ul></li>
 </ul>'."\n";
+
 	}
 
 	/**
@@ -773,5 +756,5 @@ function featured_video_plus_notify($options, $out = null) {
 			);
 		return $id;
 	}
+
 }
-?>

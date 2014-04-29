@@ -3,7 +3,7 @@
  * Class containing functions required on frontend. Enqueue scripts/styles, replace featured images by featured videos.
  *
  * @author ahoereth
- * @version 2013/03/22
+ * @version 2013/04/16
  * @see ../featured_video_plus.php
  * @see featured_video_plus in general.php
  * @since 1.0
@@ -33,6 +33,37 @@ class featured_video_plus_frontend {
 	 * @since 1.0
 	 */
 	public function enqueue() {
+		$min = SCRIPT_DEBUG ? '' : '.min';
+		$options = get_option('fvp-settings');
+
+		$deps = array('jquery');
+
+		wp_enqueue_script('jquery');
+
+		if ($options['sizing']['wmode'] == 'auto' && $options['usage']!='overlay') {
+			wp_enqueue_script('jquery.fitvids', FVP_URL . "js/jquery.fitvids$min.js", array( 'jquery' ), FVP_VERSION, false );
+			$deps[] = 'jquery.fitvids';
+		}
+
+		if ($options['usage']=='overlay') {
+			wp_enqueue_script( 'jquery.domwindow', FVP_URL . "js/jquery.domwindow$min.js", array( 'jquery' ), FVP_VERSION );
+			$deps[] = 'jquery.domwindow';
+		}
+
+		wp_enqueue_script( 'fvp_frontend', FVP_URL . "js/frontend$min.js", $deps, FVP_VERSION );
+
+		wp_localize_script( 'fvp_frontend', 'fvpdata', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'nonce' 	=> wp_create_nonce( 'featured-video-plus-nonce' ),
+			'fitvids' => isset($options['sizing']['wmode']) && $options['sizing']['wmode']=='auto',
+			'dynamic' => isset($options['usage']) && $options['usage']=='dynamic',
+			'overlay' => isset($options['usage']) && $options['usage']=='overlay',
+			'opacity' => '75',
+			'loadingw'=> FVP_URL . 'css/loading_w.gif',
+			'loadingb'=> FVP_URL . 'css/loading_b.gif'
+		) );
+
+		wp_enqueue_style('fvp_frontend', FVP_URL . 'css/frontend.css', array(), FVP_VERSION );
 	}
 
 	/**
@@ -50,11 +81,22 @@ class featured_video_plus_frontend {
 	public function filter_post_thumbnail($html, $post_id, $post_thumbnail_id, $size, $attr) {
 		global $_wp_additional_image_sizes;
 
+		$size = $this->featured_video_plus->get_size();
+
 		$options = get_option( 'fvp-settings' );
-		if( !$options['overwrite'] || !has_post_video( $post_id ) )
+
+		if (($options['usage']=='manual') || !has_post_video($post_id))
 			return $html;
 
-		return get_the_post_video( $post_id, $size );
+		elseif ($options['usage']=='replace')
+			return get_the_post_video($post_id, $size);
+
+		elseif ($options['usage']=='overlay')
+			return '<a href="#fvp_'.$post_id.'" class="fvp_overlay" onclick="return false;">'.$html.'</a><div id="fvp_'.$post_id.'" style="display: none;"></div>';
+
+		else//if ($options['usage']=='dynamic')
+			return '<a href="#fvp_'.$post_id.'" id="fvp_'.$post_id.'" class="fvp_dynamic" onclick="fvp_dynamic('.$post_id.');return false;">'.$html.'</a>';
+
 	}
 
 	/**
@@ -69,7 +111,6 @@ class featured_video_plus_frontend {
 		$h = isset($atts['height']) ? $atts['height'] : '';
 
 		if(has_post_video())
-			echo get_the_post_video(null, array($w, $h));
+			return get_the_post_video(null, array($w, $h));
 	}
 }
-?>
